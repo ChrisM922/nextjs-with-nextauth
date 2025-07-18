@@ -83,26 +83,24 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // Handle relative URLs
+      // Handle relative URLs - redirect to home page
       if (url.startsWith("/")) {
         return `${baseUrl}${url}`;
       }
       
-      // For Vercel deployment, ensure we handle the correct base URL
-      const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : baseUrl;
-      const actualBaseUrl = process.env.NEXTAUTH_URL || vercelUrl;
-      
       // Handle same origin URLs
       try {
-        if (new URL(url).origin === new URL(actualBaseUrl).origin) {
+        const urlOrigin = new URL(url).origin;
+        const baseOrigin = new URL(baseUrl).origin;
+        if (urlOrigin === baseOrigin) {
           return url;
         }
       } catch (error) {
-        // If URL parsing fails, fallback to base URL
+        // If URL parsing fails, fallback to home page
       }
       
       // Default redirect to home page
-      return actualBaseUrl;
+      return baseUrl;
     },
     async signIn({ user, account, profile }) {
       // Allow sign in for all providers
