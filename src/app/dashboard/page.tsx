@@ -34,7 +34,7 @@ export default async function Dashboard() {
               <h3 className="text-xl font-semibold text-gray-800 mb-4">
                 User Information
               </h3>
-              <div className="space-y-2">
+              <div className="space-y-2 text-gray-600">
                 <p><strong>Name:</strong> {session.user?.name || 'Not provided'}</p>
                 <p><strong>Email:</strong> {session.user?.email}</p>
                 <p><strong>User ID:</strong> {session.user?.id}</p>
@@ -45,7 +45,7 @@ export default async function Dashboard() {
               <h3 className="text-xl font-semibold text-gray-800 mb-4">
                 Session Details
               </h3>
-              <div className="space-y-2">
+              <div className="space-y-2 text-gray-600">
                 <p><strong>Session Active:</strong> ✅ Yes</p>
                 <p><strong>Authentication:</strong> Verified</p>
                 <p><strong>Protected Route:</strong> /dashboard</p>

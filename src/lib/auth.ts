@@ -83,13 +83,9 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      console.log("NextAuth redirect - url:", url, "baseUrl:", baseUrl);
-      
       // Handle relative URLs
       if (url.startsWith("/")) {
-        const redirectUrl = `${baseUrl}${url}`;
-        console.log("Redirecting to relative URL:", redirectUrl);
-        return redirectUrl;
+        return `${baseUrl}${url}`;
       }
       
       // For Vercel deployment, ensure we handle the correct base URL
@@ -99,24 +95,16 @@ export const authOptions: NextAuthOptions = {
       // Handle same origin URLs
       try {
         if (new URL(url).origin === new URL(actualBaseUrl).origin) {
-          console.log("Same origin URL:", url);
           return url;
         }
       } catch (error) {
-        console.log("URL parsing error:", error);
+        // If URL parsing fails, fallback to base URL
       }
       
       // Default redirect to home page
-      console.log("Default redirect to:", actualBaseUrl);
       return actualBaseUrl;
     },
     async signIn({ user, account, profile }) {
-      console.log("NextAuth signIn callback:", {
-        user: user?.email,
-        provider: account?.provider,
-        accountType: account?.type
-      });
-      
       // Allow sign in for all providers
       return true;
     },
