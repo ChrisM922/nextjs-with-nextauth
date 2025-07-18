@@ -22,11 +22,40 @@ Uncomment and replace the OAuth credentials in .env.local with your actual value
 ```
 GOOGLE_CLIENT_ID=your-actual-google-client-id
 GOOGLE_CLIENT_SECRET=your-actual-google-client-secret
-NEXT_PUBLIC_GOOGLE_ENABLED=true
 
 GITHUB_ID=your-actual-github-id
 GITHUB_SECRET=your-actual-github-secret
-NEXT_PUBLIC_GITHUB_ENABLED=true
 ```
+
+## For Vercel Production Deployment:
+
+### 1. Update OAuth Provider Callback URLs:
+**Google OAuth:**
+- Add: `https://your-vercel-app.vercel.app/api/auth/callback/google`
+
+**GitHub OAuth:**
+- Add: `https://your-vercel-app.vercel.app/api/auth/callback/github`
+
+### 2. Vercel Environment Variables:
+Set these in your Vercel dashboard (Project Settings → Environment Variables):
+
+```
+NEXTAUTH_URL=https://your-vercel-app.vercel.app
+NEXTAUTH_SECRET=your-nextauth-secret
+DATABASE_URL=your-production-database-url
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GITHUB_ID=your-github-id
+GITHUB_SECRET=your-github-secret
+```
+
+### 3. Common Vercel Issues:
+- **NEXTAUTH_URL must match exactly** (no trailing slash)
+- **Database must be accessible** from Vercel (use Vercel Postgres, PlanetScale, etc.)
+- **Check Vercel function logs** if OAuth redirects to signin page
+- **OAuth callback URLs** must use your exact Vercel domain
+
+### Debug:
+Visit `/debug` on your deployed app to check session and environment configuration.
 
 After setting up the credentials, restart your development server and the OAuth flow should work correctly.
