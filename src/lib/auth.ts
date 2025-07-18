@@ -20,38 +20,34 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        try {
-          const user = await prisma.user.findUnique({
-            where: {
-              email: credentials.email
-            }
-          });
-
-          if (!user || !user.password) {
-            return null;
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email
           }
+        });
 
-          const isPasswordValid = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
-
-          if (!isPasswordValid) {
-            return null;
-          }
-
-          return {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            image: user.image,
-          };
-        } catch (error) {
-          console.error("Database error during authentication:", error);
+        if (!user || !user.password) {
           return null;
         }
+
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
+
+        if (!isPasswordValid) {
+          return null;
+        }
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          image: user.image,
+        };
       }
     }),
+    // Only add Google provider if credentials are provided
     ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
       ? [
           GoogleProvider({
@@ -60,6 +56,7 @@ export const authOptions: NextAuthOptions = {
           })
         ]
       : []),
+    // Only add GitHub provider if credentials are provided
     ...(process.env.GITHUB_ID && process.env.GITHUB_SECRET
       ? [
           GitHubProvider({
@@ -84,6 +81,14 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id as string;
       }
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      // Handle relative URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Handle same origin URLs
+      if (new URL(url).origin === baseUrl) return url;
+      // Default redirect to home page
+      return baseUrl;
     },
   },
   pages: {
