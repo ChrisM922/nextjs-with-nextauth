@@ -83,7 +83,6 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // Handle relative URLs - redirect to home page
       if (url.startsWith("/")) {
         return `${baseUrl}${url}`;
       }
@@ -97,6 +96,7 @@ export const authOptions: NextAuthOptions = {
         }
       } catch (error) {
         // If URL parsing fails, fallback to home page
+        return baseUrl;
       }
       
       // Default redirect to home page
