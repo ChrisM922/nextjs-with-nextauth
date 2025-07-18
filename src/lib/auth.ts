@@ -83,23 +83,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      if (url.startsWith("/")) {
-        return `${baseUrl}${url}`;
-      }
-      
-      // Handle same origin URLs
-      try {
-        const urlOrigin = new URL(url).origin;
-        const baseOrigin = new URL(baseUrl).origin;
-        if (urlOrigin === baseOrigin) {
-          return url;
-        }
-      } catch (error) {
-        // If URL parsing fails, fallback to home page
-        return baseUrl;
-      }
-      
-      // Default redirect to home page
+      // Always redirect to homepage after OAuth sign in
       return baseUrl;
     },
     async signIn({ user, account, profile }) {
