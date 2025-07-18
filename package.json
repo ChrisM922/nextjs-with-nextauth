@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "db:push": "prisma db push",
@@ -12,7 +12,8 @@
     "db:studio": "prisma studio",
     "generate-secret": "node scripts/generate-secret.js",
     "security-update": "npm audit fix --force && npx prisma generate && npm run build",
-    "security-check": "npm audit"
+    "security-check": "npm audit",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",

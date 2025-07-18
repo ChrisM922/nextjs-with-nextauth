@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Configuration options can be added here
+  experimental: {
+    serverComponentsExternalPackages: ['@prisma/client'],
+  },
+  // Optimize for Vercel deployment
+  output: 'standalone',
 }
 
 module.exports = nextConfig
