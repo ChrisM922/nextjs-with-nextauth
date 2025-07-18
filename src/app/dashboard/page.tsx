@@ -2,6 +2,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
+import { DeleteUserButton } from '@/components/DeleteUserButton';
 
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
@@ -65,6 +66,10 @@ export default async function Dashboard() {
               <li>• Server-side session validation</li>
               <li>• Secure route protection</li>
             </ul>
+          </div>
+          
+          <div className="mt-8">
+            <DeleteUserButton />
           </div>
         </div>
       </div>
